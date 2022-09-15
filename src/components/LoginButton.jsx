@@ -1,15 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import "./Button.css";
+
+import { Button } from "./Button";
 
 export default function LoginButton() {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <button
+    <Button
       onClick={() => loginWithRedirect()}
-      className="button button-primary"
+      primary
     >
       Log In
-    </button>
+    </Button>
   );
 }
