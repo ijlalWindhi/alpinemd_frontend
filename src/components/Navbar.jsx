@@ -4,6 +4,8 @@ import LogoutButton from "./LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 
+import alpinemd_svg from "../assets/alpinemd.svg";
+
 const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -21,7 +23,14 @@ const NavbarList = styled.ul`
 
 const TextLogo = styled.span`
   font-size: larger;
-  font-weight: bold;
+  font-weight: 600;
+  margin-top: 3px;
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 `;
 
 export default function Navbar() {
@@ -29,17 +38,18 @@ export default function Navbar() {
 
   return (
     <NavbarContainer>
-      <div className="navbar__left-side">
+      <LogoWrapper>
+        <img src={alpinemd_svg} alt="" width="39" height="25" />
         <TextLogo>AlpineMD</TextLogo>
-      </div>
-      <div className="navbar__right-side">
+      </LogoWrapper>
+      <div>
         <NavbarList>
           {isAuthenticated ? (
-            <li className="navbar__item">
+            <li>
               <LogoutButton />
             </li>
           ) : (
-            <li className="navbar__item">
+            <li>
               <LoginButton />
             </li>
           )}

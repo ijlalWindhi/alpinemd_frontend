@@ -1,79 +1,55 @@
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-grow: 1;
-`;
+import Note from "../components/Note";
 
 const NotesWrapper = styled.div`
-  flex: 0.75 0 auto;
+  flex-grow: 1;
   padding: 1.5rem;
-`;
-
-const UserinfoWrapper = styled.div`
-  flex: 0.25 1 25em;
-  padding: 1.5rem;
-  border-left: solid 1px #ddd;
-
-  display: flex;
-  flex-flow: column;
-
-  font-family: monospace;
-  line-height: 1.1rem;
-
-  & h2 {
-    margin-bottom: 0.4em;
-  }
-
-  & p {
-    margin-bottom: 0.325em;
-    overflow-wrap: anywhere;
-  }
-`;
-
-const Header2 = styled.h2`
-  font-size: large;
-  font-weight: 600;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 `;
 
 export default function Notes() {
   const {
     isAuthenticated,
-    isLoading,
-    getIdTokenClaims,
     getAccessTokenSilently,
   } = useAuth0();
 
-  const [idToken, setIdToken] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
+  const [notes, setNotes] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
-        getIdTokenClaims()
-            .then(token => setIdToken(token))
-            .catch(console.error);
+    const getUserNotes = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          audience: "https://alpinemd.com/",
+          scope: "read:notes",
+        });
+
+        const notesByUrl = "http://localhost:8080/notes";
+
+        const notesResponse = await fetch(notesByUrl, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        });
+
+        const notes = await notesResponse.json();
+
+        setNotes(notes);
+      } catch(e) {
+        console.error(e.message);
+      }
     }
-  }, [isAuthenticated, isLoading]);
+
+    if (isAuthenticated) getUserNotes();
+  }, [getAccessTokenSilently, isAuthenticated]);
 
   return (
-    <Wrapper>
-      <NotesWrapper></NotesWrapper>
-      <UserinfoWrapper>
-        {isAuthenticated && (
-          <>
-            <Header2>User Info</Header2>
-            {idToken && (
-                Object.entries(idToken).map(([key, value]) => (
-                <p key={key}>
-                    {key}: {value}
-                </p>
-                ))
-            )}
-          </>
-        )}
-      </UserinfoWrapper>
-    </Wrapper>
+    <NotesWrapper>
+      {isAuthenticated && notes && (
+        notes.map((note, i) => <Note title={note.title} body={note.body} key={i} />)
+      )}
+    </NotesWrapper>
   );
 }

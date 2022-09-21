@@ -3,8 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 
 import Root from "./routes/Root";
-import Notes from "./routes/Notes";
+import Dashboard from "./routes/Dashboard";
 import Welcome from "./routes/Welcome";
+import NoteForm from "./routes/NoteForm";
+import Notes from "./routes/Notes";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +28,17 @@ const router = createBrowserRouter([
       },
       {
         path: "notes",
-        element: <Notes />
+        element: <Dashboard />,
+        children: [
+          {
+            index: true,
+            element: <Notes />
+          },
+          {
+            path: "new",
+            element: <NoteForm />
+          },
+        ]
       }
     ]
   },
