@@ -3,8 +3,11 @@ import { Outlet } from "react-router-dom";
 import UserInfo from "./UserInfo";
 
 const Wrapper = styled.div`
-  display: flex;
   flex-grow: 1;
+
+  display: flex;
+
+  overflow-y: clip;
 `;
 
 export default function Dashboard() {

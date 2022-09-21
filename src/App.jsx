@@ -6,7 +6,7 @@ import Root from "./routes/Root";
 import Dashboard from "./routes/Dashboard";
 import Welcome from "./routes/Welcome";
 import NoteForm from "./routes/NoteForm";
-import Notes from "./routes/Notes";
+import NoteList from "./routes/NoteList";
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Notes />
+            element: <NoteList />
           },
           {
             path: "new",

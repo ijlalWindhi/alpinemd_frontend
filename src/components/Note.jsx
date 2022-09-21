@@ -7,7 +7,6 @@ const Container = styled.div`
     padding: 1.5rem;
     border: solid 1px #ddd;
     border-radius: 16px;
-    height: min-content;
 `;
 
 const Title = styled.h3`
@@ -17,6 +16,7 @@ const Title = styled.h3`
 `;
 
 const Body = styled.p`
+    overflow-wrap: anywhere;
 `;
 
 export default function Note({ title, body }) {

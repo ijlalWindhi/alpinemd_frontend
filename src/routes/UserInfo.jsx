@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const UserinfoWrapper = styled.div`
   flex-basis: 30em;
+  flex-shrink: 0;
   padding: 1.5rem;
   border-left: solid 1px #ddd;
 
@@ -21,6 +22,8 @@ const UserinfoWrapper = styled.div`
     margin-bottom: 0.325em;
     overflow-wrap: anywhere;
   }
+
+  overflow-y: scroll;
 `;
 
 const Header2 = styled.h2`
