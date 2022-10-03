@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  height: 100vh;
   font-family: monospace;
   font-size: x-large;
 `;

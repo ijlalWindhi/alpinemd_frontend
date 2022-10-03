@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
 
 import alpinemd_svg from "../assets/alpinemd.svg";
+import {Link} from "react-router-dom";
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -39,7 +40,9 @@ export default function Navbar() {
   return (
     <NavbarContainer>
       <LogoWrapper>
-        <img src={alpinemd_svg} alt="" width="39" height="25" />
+        <Link to="/notes">
+          <img src={alpinemd_svg} alt="" width="39" height="25" />
+        </Link>
         <TextLogo>AlpineMD</TextLogo>
       </LogoWrapper>
       <div>
