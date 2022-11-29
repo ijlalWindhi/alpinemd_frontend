@@ -1,13 +1,13 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../contexts/AuthProvider";
 
 import { Button } from "./Button";
 
 export default function LoginButton() {
-  const { loginWithRedirect } = useAuth0();
+  const { login } = useAuth();
 
   return (
     <Button
-      onClick={() => loginWithRedirect()}
+      onClick={() => login()}
       primary
     >
       Log In
