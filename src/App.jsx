@@ -1,25 +1,56 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "./contexts/auth-provider";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useAuth } from "./contexts/auth-provider.tsx";
+import styled from "styled-components";
+
+import Root from "./routes/Root";
+import Dashboard from "./routes/Dashboard";
+import Welcome from "./routes/Welcome";
+import NoteForm from "./routes/NoteForm";
+import NoteList from "./routes/NoteList";
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: monospace;
+  font-size: x-large;
+`;
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <Welcome />
+      },
+      {
+        path: "notes",
+        element: <Dashboard />,
+        children: [
+          {
+            index: true,
+            element: <NoteList />
+          },
+          {
+            path: "new",
+            element: <NoteForm />
+          },
+        ]
+      }
+    ]
+  },
+]);
 
 export default function App() {
-  const { login, logout, isAuthenticated, user, getAccessToken } = useAuth();
+  const { isLoading } = useAuth();
+  
+  if (isLoading) {
+    return <Wrapper><p>Loading User Info...</p></Wrapper>;
+  }
 
-  const [accessToken, setAccessToken] = useState();
-
-  useEffect(() => {
-    (async () => {
-      setAccessToken(await getAccessToken())
-    })();
-  }, [isAuthenticated]);
-
-  return (
-    <div>
-      <pre>
-        { isAuthenticated && JSON.stringify(user) } <br />
-        { isAuthenticated && JSON.stringify(accessToken) }
-      </pre>
-      <button onClick={login}>Login Bang</button>
-      <button onClick={logout}>Logout Bang</button>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
+

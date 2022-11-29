@@ -1,7 +1,7 @@
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../contexts/auth-provider";
 import styled from "styled-components";
 
 import alpinemd_svg from "../assets/alpinemd.svg";
@@ -35,7 +35,7 @@ const LogoWrapper = styled.div`
 `;
 
 export default function Navbar() {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth();
 
   return (
     <NavbarContainer>

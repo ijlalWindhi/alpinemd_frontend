@@ -1,6 +1,7 @@
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth } from "../contexts/auth-provider";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
+import jwtDecode from "jwt-decode";
 
 const UserinfoWrapper = styled.div`
   flex-basis: 30em;
@@ -35,25 +36,23 @@ export default function UserInfo() {
   const {
     isAuthenticated,
     isLoading,
-    getIdTokenClaims,
-    getAccessTokenSilently
-  } = useAuth0();
+    getAccessToken,
+    user
+  } = useAuth();
 
   const [idToken, setIdToken] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated && !isLoading) {
-      getIdTokenClaims()
-        .then(token => setIdToken(token))
-        .catch(console.error);
+      setIdToken(user)
     }
   }, [isAuthenticated, isLoading]);
 
   useEffect(() => {
-    const getAccessToken = async () => {
+    const getAccessTokenInfo = async () => {
       try {
-        const accessToken = await getAccessTokenSilently({
+        const accessToken = await getAccessToken({
           audience: "https://alpinemd.com/",
           scope: "read:notes create:notes update:notes delete:notes",
           detailedResponse: true
@@ -65,8 +64,8 @@ export default function UserInfo() {
       }
     }
 
-    getAccessToken();
-  }, [getAccessTokenSilently]);
+    getAccessTokenInfo();
+  }, [getAccessToken]);
 
   return (
     <UserinfoWrapper>
@@ -80,12 +79,12 @@ export default function UserInfo() {
               </p>
             ))}
           <Header2>Access Token Info</Header2>
-          {accessToken &&
-            Object.entries(accessToken).map(([key, value]) => (
-              <p key={key}>
-                {key}: {value}
-              </p>
-            ))}
+          <p>{accessToken && Object.entries(jwtDecode(accessToken)).map(([key, value]) => (
+            <p key={key}>
+              {key}: {value}
+            </p>
+          ))}</p>
+          <p style={{color: "darkslategray"}}>{accessToken}</p>
         </>
       )}
     </UserinfoWrapper>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth } from "../contexts/auth-provider";
 import { useEffect, useState } from "react";
 import Note from "../components/Note";
 import { Link } from "react-router-dom";
@@ -72,7 +72,7 @@ const ControlButton = styled.button`
 `;
 
 export default function NoteList() {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessToken } = useAuth();
 
   const [notes, setNotes] = useState(null);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
@@ -80,7 +80,7 @@ export default function NoteList() {
   useEffect(() => {
     const getUserNotes = async () => {
       try {
-        const accessToken = await getAccessTokenSilently({
+        const accessToken = await getAccessToken({
           audience: "https://alpinemd.com/",
           scope: "read:notes",
         });
@@ -102,7 +102,7 @@ export default function NoteList() {
     };
 
     if (isAuthenticated) getUserNotes();
-  }, [getAccessTokenSilently, isAuthenticated]);
+  }, [getAccessToken, isAuthenticated]);
 
   return (
     <Container>

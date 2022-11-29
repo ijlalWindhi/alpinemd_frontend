@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/AuthProvider";
+import { useAuth } from "../contexts/auth-provider";
 
 import { Button } from "./Button";
 
@@ -7,7 +7,7 @@ export default function LoginButton() {
 
   return (
     <Button
-      onClick={() => login()}
+      onClick={login}
       primary
     >
       Log In
