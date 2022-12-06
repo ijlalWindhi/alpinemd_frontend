@@ -3,18 +3,18 @@ import { Outlet } from "react-router-dom";
 import UserInfo from "./UserInfo";
 
 const Wrapper = styled.div`
-  flex-grow: 1;
+    flex-grow: 1;
 
-  display: flex;
+    display: flex;
 
-  overflow-y: clip;
+    overflow-y: clip;
 `;
 
 export default function Dashboard() {
-  return (
-    <Wrapper>
-      <Outlet />
-      <UserInfo />
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <Outlet />
+            {/* <UserInfo /> */}
+        </Wrapper>
+    );
 }
