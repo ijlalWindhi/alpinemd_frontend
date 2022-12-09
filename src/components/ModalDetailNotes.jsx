@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Modal,
     ModalOverlay,
@@ -16,9 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import AlertNotification from "./Alert";
-import { PostNotes } from "./ApiHandler";
+import { UpdateNotes } from "./ApiHandler";
 
-export default function ModalAddNotes(value) {
+export default function ModalDetailNotes({ isOpen, onClose, payload, reload }) {
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [status, setStatus] = useState("");
@@ -27,21 +27,21 @@ export default function ModalAddNotes(value) {
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            title: payload.title,
+            note: payload.body,
+        },
+    });
 
     const submitHandler = async (values) => {
         setIsLoading(true);
-        const res = await PostNotes(values);
-        console.log(res);
+        const res = await UpdateNotes(values, payload.id, reload);
         setMessage(res.message);
         setStatus(res.status);
         if (res.status === "success") {
             setTimeout(() => {
-                value.onClose(),
-                    value.reload(),
-                    reset(),
-                    setStatus(""),
-                    setMessage("");
+                onClose(), reload(), reset(), setStatus(""), setMessage("");
                 setIsLoading(false);
             }, 1000);
         } else {
@@ -52,14 +52,21 @@ export default function ModalAddNotes(value) {
     };
 
     const handleClose = () => {
-        value.onClose();
+        onClose();
         reset();
     };
 
+    useEffect(() => {
+        reset({
+            title: payload.title,
+            note: payload.body,
+        });
+    }, [payload, reset]);
+
     return (
         <Modal
-            onClose={value.onClose}
-            isOpen={value.isOpen}
+            isOpen={isOpen}
+            onClose={onClose}
             isCentered
             blockScrollOnMount={false}
             motionPreset="scale"
@@ -69,7 +76,7 @@ export default function ModalAddNotes(value) {
             <ModalContent rounded={"lg"}>
                 <ModalBody p={8}>
                     <Heading fontSize={"lg"} fontWeight={"semibold"}>
-                        Add New Note
+                        Detail Notes
                     </Heading>
                     <Box mt={4}>
                         <AlertNotification status={status} message={message} />
@@ -119,32 +126,33 @@ export default function ModalAddNotes(value) {
                                 )}
                             </Flex>
                         </Container>
-                        <Button
-                            variant="outline"
-                            colorScheme={"teal"}
-                            fontWeight={"medium"}
-                            fontSize={"sm"}
-                            px={6}
-                            rounded={"md"}
-                            onClick={handleClose}
-                        >
-                            Cancle
-                        </Button>
-                        <Button
-                            type="submit"
-                            ml={4}
-                            px={6}
-                            colorScheme={"teal"}
-                            rounded={"md"}
-                            fontWeight={"medium"}
-                            fontSize={"sm"}
-                            onClick={handleSubmit(async (values) => {
-                                await submitHandler(values);
-                            })}
-                            isLoading={isLoading}
-                        >
-                            Add
-                        </Button>
+                        <Flex justifyContent={"space-between"}>
+                            <Button
+                                variant="outline"
+                                colorScheme={"red"}
+                                fontWeight={"medium"}
+                                fontSize={"sm"}
+                                px={6}
+                                rounded={"md"}
+                                onClick={handleClose}
+                            >
+                                Cancle
+                            </Button>
+                            <Button
+                                variant="outline"
+                                colorScheme={"teal"}
+                                fontWeight={"medium"}
+                                fontSize={"sm"}
+                                px={6}
+                                rounded={"md"}
+                                isLoading={isLoading}
+                                onClick={handleSubmit(async (values) => {
+                                    await submitHandler(values);
+                                })}
+                            >
+                                Save Change
+                            </Button>
+                        </Flex>
                     </FormControl>
                 </ModalBody>
             </ModalContent>

@@ -49,6 +49,7 @@ export default function Navbar() {
                 py={4}
                 px={{ base: 10, md: 10, lg: 16 }}
                 boxShadow={"md"}
+                zIndex={10}
             >
                 <Flex
                     justifyContent={{ base: "space-between" }}
@@ -197,19 +198,19 @@ export default function Navbar() {
                                     </Text>
                                     <Button
                                         justifyContent={"center"}
-                                        color={color}
-                                        bg={bg}
+                                        color={bg}
+                                        bg={color}
                                         rounded={"full"}
-                                        px={{ md: 6, lg: 10 }}
+                                        px={{ base: 10 }}
                                         _hover={
                                             colorMode === "light"
                                                 ? {
-                                                      bg: "blackAlpha.800",
-                                                      color: "white",
-                                                  }
-                                                : {
                                                       bg: "whiteAlpha.900",
                                                       color: "black",
+                                                  }
+                                                : {
+                                                      bg: "blackAlpha.700",
+                                                      color: "white",
                                                   }
                                         }
                                         onClick={() => logout()}
@@ -228,38 +229,37 @@ export default function Navbar() {
                                     </Button>
                                 </Flex>
                             ) : (
-                                <Link to="/login">
-                                    <Button
-                                        justifyContent={"center"}
-                                        color={color}
-                                        bg={bg}
-                                        rounded={"full"}
-                                        px={{ md: 4, lg: 10 }}
-                                        _hover={
-                                            colorMode === "light"
-                                                ? {
-                                                      bg: "white",
-                                                      color: "black",
-                                                  }
-                                                : {
-                                                      bg: "black",
-                                                      color: "white",
-                                                  }
-                                        }
+                                <Button
+                                    justifyContent={"center"}
+                                    color={bg}
+                                    bg={color}
+                                    rounded={"full"}
+                                    px={{ base: 10 }}
+                                    _hover={
+                                        colorMode === "light"
+                                            ? {
+                                                  bg: "whiteAlpha.900",
+                                                  color: "black",
+                                              }
+                                            : {
+                                                  bg: "blackAlpha.700",
+                                                  color: "white",
+                                              }
+                                    }
+                                    onClick={() => login()}
+                                >
+                                    <Text
+                                        fontSize={{
+                                            base: "lg",
+                                            md: "sm",
+                                            lg: "md",
+                                        }}
+                                        fontWeight={"normal"}
+                                        cursor={"pointer"}
                                     >
-                                        <Text
-                                            fontSize={{
-                                                base: "lg",
-                                                md: "sm",
-                                                lg: "md",
-                                            }}
-                                            fontWeight={"normal"}
-                                            cursor={"pointer"}
-                                        >
-                                            Login/Register
-                                        </Text>
-                                    </Button>
-                                </Link>
+                                        Login/Register
+                                    </Text>
+                                </Button>
                             )}
                         </Flex>
                     </Stack>

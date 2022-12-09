@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "../assets/alpinemd.svg";
 import {
     Container,
@@ -13,12 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/auth-provider";
+import { checkLogged } from "../utils/constants";
 
 export default function Welcome() {
     const { colorMode, toggleColorMode } = useColorMode();
-    const bg = useColorModeValue("gray.800", "white");
-    const color = useColorModeValue("white", "gray.800");
+    const bg = useColorModeValue("black", "white");
+    const color = useColorModeValue("white", "black");
     const { login } = useAuth();
+
     return (
         <Container maxW="80%" gridTemplateRows="repeat(2, 1fr)" py={14} p={0}>
             <Center>
@@ -67,15 +70,14 @@ export default function Welcome() {
                             color={color}
                             justifyContent={"center"}
                             rounded={"full"}
-                            px={{ base: 10, md: 6, lg: 20 }}
-                            py={4}
+                            px={{ base: 8, md: 6, lg: 20 }}
+                            py={{ base: 4, md: 6 }}
                             mt={5}
-                            _hover={{
-                                bg:
-                                    colorMode === "light"
-                                        ? "gray.700"
-                                        : "whiteAlpha.800",
-                            }}
+                            _hover={
+                                colorMode === "light"
+                                    ? { bg: "white", color: "black" }
+                                    : { bg: "black", color: "white" }
+                            }
                             as={motion.button}
                             whileHover={{ scale: 1.02 }}
                             initial={{ opacity: 0 }}
@@ -85,9 +87,9 @@ export default function Welcome() {
                         >
                             <Text
                                 fontSize={{
-                                    base: "lg",
+                                    base: "md",
                                     md: "md",
-                                    lg: "2xl",
+                                    lg: "lg",
                                 }}
                                 fontWeight={"bold"}
                                 cursor={"pointer"}

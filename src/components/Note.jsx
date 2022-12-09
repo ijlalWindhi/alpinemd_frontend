@@ -2,8 +2,9 @@ import React, { useRef } from "react";
 import { Box, Text, GridItem } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 import { motion } from "framer-motion";
+import ActionButton from "./ActionButton";
 
-export default function Note({ title, body }) {
+export default function Note({ reload, payload }) {
     const scrollRef = useRef(null);
     return (
         <GridItem mx={"auto"} width={"80%"}>
@@ -21,7 +22,6 @@ export default function Note({ title, body }) {
                         "2px solid #333",
                         "2px solid #ddd"
                     ),
-                    cursor: "pointer",
                     transform: "scale(1.01)",
                     transition: "all 0.2s ease-in-out",
                     boxShadow: "lg",
@@ -33,11 +33,13 @@ export default function Note({ title, body }) {
             >
                 <Text
                     fontWeight={"semibold"}
-                    fontSize={{ base: "md", md: "lg" }}
+                    fontSize={{ base: "lg", md: "xl" }}
+                    mb={2}
                 >
-                    {title}
+                    {payload.title}
                 </Text>
-                <Text fontSize={{ base: "sm", md: "md" }}>{body}</Text>
+                <Text fontSize={{ base: "sm", md: "md" }}>{payload.body}</Text>
+                <ActionButton reload={reload} payload={payload} />
             </Box>
         </GridItem>
     );
